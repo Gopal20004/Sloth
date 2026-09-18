@@ -56,6 +56,12 @@ Sloth/
 
 A frontend will be added alongside it later.
 
+## Contributing
+
+- all work happens on a branch off main, named feature/<issue>-<short-name>
+- every change goes through a pull request that references its issue
+- main is never committed to directly
+- "Nothing is built yet — this list is the roadmap." will go stale fast; fine for now, just remember to update it.
 ## Status
 
 Early development — started September 2026.
