@@ -1,0 +1,11 @@
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
