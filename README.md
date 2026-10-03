@@ -7,13 +7,13 @@ Think of it as a place where every game has a home, and every player has a voice
 ## Feature roadmap
 
 - **Accounts** — register, log in, manage a profile (backend API available)
-- **Game catalog** — popular games on the home page, plus search
+- **Game catalog** — curated popular games and search (backend API available)
 - **Game communities** — a discussion space for every game
 - **Real-time chat** — talk with other players inside a community
 - **Servers** — user-created groups with invites and members
 - **Videos** — upload gameplay clips to a game's section or your profile
 
-The account backend API is available. The other features remain planned.
+Account and game catalog backend APIs are available. The other features remain planned.
 
 ## Tech stack
 
@@ -60,6 +60,10 @@ All request and response bodies use JSON. Start the backend as described above.
 | Log out | `DELETE /api/auth/logout` | Bearer token |
 
 Login returns an opaque token and its expiration time. Store the token securely; it expires after 30 days, and logout revokes it. Password hashes and token hashes are stored in MySQL. Registration accepts an email address only once, regardless of letter case.
+
+## Game catalog API
+
+The game catalog is public. `GET /api/games/popular` returns the manually curated order, `GET /api/games/search?q=minecraft` searches names without regard to letter case, and `GET /api/games/{slug}` returns one game. List endpoints accept `page` (starting at 0) and `size` (1–50), and return `content`, `page`, `size`, `totalElements`, and `totalPages`. The initial catalog is seeded by Flyway; popularity order is not a live ranking.
 
 ## Project structure
 
