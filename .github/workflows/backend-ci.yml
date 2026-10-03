@@ -22,3 +22,39 @@ jobs:
       - name: Run backend tests
         run: ./mvnw --batch-mode verify
         working-directory: demo
+
+  backend-startup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+
+      - name: Start local infrastructure
+        run: docker compose up -d --wait
+
+      - name: Start normal backend entry point
+        run: |
+          ./mvnw --batch-mode spring-boot:run > /tmp/sloth-backend.log 2>&1 &
+          echo $! > /tmp/sloth-backend.pid
+        working-directory: demo
+
+      - name: Check backend health
+        run: |
+          for attempt in $(seq 1 90); do
+            if curl -fsS http://localhost:8080/actuator/health | grep -q '"status":"UP"'; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/sloth-backend.log
+          exit 1
+
+      - name: Stop local infrastructure
+        if: always()
+        run: docker compose down

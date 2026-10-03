@@ -1,0 +1,30 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-sloth-root-dev}
+      MYSQL_DATABASE: sloth
+      MYSQL_USER: sloth
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-sloth}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7.4
+    ports:
+      - "6379:6379"
+
+  kafka:
+    image: apache/kafka:4.1.1
+    ports:
+      - "9092:9092"
+
+volumes:
+  mysql_data:
