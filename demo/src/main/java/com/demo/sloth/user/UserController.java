@@ -26,6 +26,11 @@ public class UserController {
         return userService.getProfile(userId);
     }
 
+    @GetMapping("/public/{id}")
+    public PublicUserResponse getPublicProfile(@PathVariable Long id) {
+        return userService.getPublicProfile(id);
+    }
+
     @PatchMapping("/me")
     public UserResponse updateProfile(
             @AuthenticationPrincipal Long userId,

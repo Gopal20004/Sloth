@@ -28,14 +28,23 @@ class AccountApiTests {
         mvc.perform(get("/api/users/me"))
                 .andExpect(status().isUnauthorized());
 
-        mvc.perform(post("/api/users/register")
+        String registrationBody = mvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"displayName":" Player ","email":"%s","password":"secret-password"}
                                 """.formatted(email.toUpperCase())))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.email").value(email))
-                .andExpect(jsonPath("$.displayName").value("Player"));
+                .andExpect(jsonPath("$.displayName").value("Player"))
+                .andReturn().getResponse().getContentAsString();
+
+        Number userId = JsonPath.read(registrationBody, "$.id");
+        mvc.perform(get("/api/users/public/{id}", userId.longValue()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.displayName").value("Player"))
+                .andExpect(jsonPath("$.createdAt").exists())
+                .andExpect(jsonPath("$.email").doesNotExist())
+                .andExpect(jsonPath("$.passwordHash").doesNotExist());
 
         mvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)

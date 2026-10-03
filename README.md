@@ -6,14 +6,14 @@ Think of it as a place where every game has a home, and every player has a voice
 
 ## Feature roadmap
 
-- **Accounts** — register, log in, manage a profile (backend API available)
-- **Game catalog** — curated popular games and search (backend API available)
-- **Game communities** — discussion posts and replies for every game (backend API available)
-- **Real-time chat** — talk with other players inside a community (backend API available)
-- **Servers** — user-created groups with invites and members (backend API available)
-- **Videos** — upload gameplay clips to a game's section or your profile (backend API available)
+- **Accounts** — register, log in, manage a profile
+- **Game catalog** — curated popular games and search
+- **Game communities** — discussion posts and replies for every game
+- **Real-time chat** — talk with other players inside a community
+- **Servers** — user-created groups with invites and members
+- **Videos** — upload gameplay clips to a game's section or your profile
 
-The backend APIs cover the roadmap features. The frontend remains planned.
+The React web app and backend APIs cover the roadmap features.
 
 ## Tech stack
 
@@ -26,7 +26,7 @@ The backend APIs cover the roadmap features. The frontend remains planned.
 | Messaging / events | Apache Kafka (provisioned for future use) |
 | Build | Maven (wrapper included) |
 | Local infra | Docker Compose; Testcontainers for integration tests |
-| Frontend | React and TypeScript (planned) |
+| Frontend | React, TypeScript, Vite, pnpm |
 
 ## Running locally
 
@@ -34,12 +34,16 @@ The backend APIs cover the roadmap features. The frontend remains planned.
 
 - JDK 21
 - Docker Desktop with Compose
+- Node.js 24 and pnpm 11.25.0 for the web app
 
 ### Steps
 
 1. From the repository root, run `docker compose up -d`. This starts MySQL, Redis, and Kafka. MySQL uses a persistent Docker volume.
 2. In `demo/`, run `.\mvnw.cmd spring-boot:run` on Windows or `./mvnw spring-boot:run` on macOS/Linux. The normal `DemoApplication` entry point now works with the local database. Flyway creates and seeds the schema at startup.
 3. Check `http://localhost:8080/actuator/health`; it should return `"status":"UP"`.
+4. In a second terminal, run `cd frontend`, `pnpm install`, then `pnpm dev`. Open `http://localhost:5173`.
+
+The Vite development server proxies `/api` to the backend on port 8080. To build the web app, run `pnpm build` in `frontend/`. For a separately hosted build, set `VITE_API_BASE_URL` to the backend origin and allow that origin with `SLOTH_ALLOWED_ORIGIN` in the backend environment.
 
 The defaults in `compose.yaml` and `application.yaml` are for local development. Copy `.env.example` to `.env` if you want to change the Compose passwords, and set `DB_PASSWORD` to the same MySQL user password before starting the backend. `DB_URL`, `DB_USER`, `REDIS_HOST`, `REDIS_PORT`, `KAFKA_BOOTSTRAP_SERVERS`, `SLOTH_ALLOWED_ORIGIN`, and `SLOTH_VIDEO_PATH` can also be set through environment variables. Keep `demo/data/videos` if you want uploaded clips to survive restarts.
 
@@ -54,6 +58,7 @@ All request and response bodies use JSON. Start the backend as described above.
 | Register | `POST /api/users/register` | `displayName`, `email`, `password` |
 | Log in | `POST /api/auth/login` | `email`, `password` |
 | View profile | `GET /api/users/me` | `Authorization: Bearer <token>` |
+| View public player profile | `GET /api/users/public/{id}` | No token; returns name and join date only |
 | Update display name | `PATCH /api/users/me` | Bearer token and `displayName` |
 | Log out | `DELETE /api/auth/logout` | Bearer token |
 
@@ -83,10 +88,9 @@ Authenticated players upload a clip with `POST /api/videos` as multipart form da
 
 ```
 Sloth/
-└── demo/     Spring Boot backend
+├── demo/       Spring Boot backend
+└── frontend/   React web app
 ```
-
-A frontend will be added alongside it later.
 
 ## Contributing
 
@@ -96,4 +100,4 @@ A frontend will be added alongside it later.
 
 ## Status
 
-Early development — started September 2026.
+Roadmap MVP implemented. Chat events currently broadcast within one backend process, the game catalog has a curated popularity order, and video files use local persistent storage.
