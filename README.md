@@ -22,30 +22,28 @@ The backend APIs cover the roadmap features. The frontend remains planned.
 | Language | Java 21 |
 | Framework | Spring Boot 4.1 (Web MVC, Data JPA, Security, Validation, Actuator) |
 | Database | MySQL, migrations with Flyway |
-| Cache / presence | Redis |
-| Messaging / events | Apache Kafka |
+| Cache / presence | Redis (provisioned for future use) |
+| Messaging / events | Apache Kafka (provisioned for future use) |
 | Build | Maven (wrapper included) |
-| Local infra | Docker via Testcontainers |
-| Frontend | TBD |
+| Local infra | Docker Compose; Testcontainers for integration tests |
+| Frontend | React and TypeScript (planned) |
 
 ## Running locally
 
 ### Prerequisites
 
 - JDK 21
-- Docker Desktop (must be running — MySQL, Redis and Kafka are started automatically in containers)
+- Docker Desktop with Compose
 
 ### Steps
 
-1. Clone the repo and open `demo/` in IntelliJ (or open the root and let it detect `demo/pom.xml` as a Maven project).
-2. Make sure Docker Desktop is running.
-3. Run `TestDemoApplication` (in `src/test/java/com/demo/sloth`). This starts the app together with MySQL, Redis and Kafka containers.
-   - From the terminal instead: `cd demo` then `.\mvnw.cmd spring-boot:test-run` (Windows) or `./mvnw spring-boot:test-run` (macOS/Linux).
-4. The app listens on `http://localhost:8080`. Check it's alive at `http://localhost:8080/actuator/health` — you should see `"status":"UP"`.
+1. From the repository root, run `docker compose up -d`. This starts MySQL, Redis, and Kafka. MySQL uses a persistent Docker volume.
+2. In `demo/`, run `.\mvnw.cmd spring-boot:run` on Windows or `./mvnw spring-boot:run` on macOS/Linux. The normal `DemoApplication` entry point now works with the local database. Flyway creates and seeds the schema at startup.
+3. Check `http://localhost:8080/actuator/health`; it should return `"status":"UP"`.
 
-The first run pulls container images (~1 GB) and takes a minute or two; later runs take about 15 seconds.
+The defaults in `compose.yaml` and `application.yaml` are for local development. Copy `.env.example` to `.env` if you want to change the Compose passwords, and set `DB_PASSWORD` to the same MySQL user password before starting the backend. `DB_URL`, `DB_USER`, `REDIS_HOST`, `REDIS_PORT`, `KAFKA_BOOTSTRAP_SERVERS`, `SLOTH_ALLOWED_ORIGIN`, and `SLOTH_VIDEO_PATH` can also be set through environment variables. Keep `demo/data/videos` if you want uploaded clips to survive restarts.
 
-> `DemoApplication` (in `src/main`) is the real entry point but has no database configured yet, so it will fail to start until a proper `application.yaml` for a real environment is added.
+For backend tests, `cd demo` and run `.\mvnw.cmd verify` (Windows) or `./mvnw verify` (macOS/Linux). Testcontainers starts isolated MySQL, Redis, and Kafka containers; the Compose stack is not required for tests.
 
 ## Account API
 
