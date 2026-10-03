@@ -21,6 +21,6 @@ spring:
       max-request-size: 105MB
 
 sloth:
-  allowed-origin: ${SLOTH_ALLOWED_ORIGIN:http://localhost:5173}
+  allowed-origin: ${SLOTH_ALLOWED_ORIGIN:http://localhost:5173,http://127.0.0.1:5173}
   videos:
     path: ${SLOTH_VIDEO_PATH:./data/videos}

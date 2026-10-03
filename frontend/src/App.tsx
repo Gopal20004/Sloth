@@ -42,7 +42,7 @@ function Header() {
       <Link className={location.pathname.startsWith("/servers") ? "active" : ""} to="/servers"><Users size={17} /> Servers</Link>
       {user && <Link className={location.pathname === "/profile" ? "active" : ""} to="/profile"><UserRound size={17} /> Profile</Link>}
     </nav>
-    <div className="header-actions">{user ? <><Link className="header-user" to="/profile"><span className="avatar-small">{user.displayName.slice(0, 1).toUpperCase()}</span><span>{user.displayName}</span></Link><button className="icon-button" title="Sign out" aria-label="Sign out" onClick={logout}><LogOut size={18} /></button></> : <><Link className="text-link header-login" to="/login">Sign in</Link><Link className="button primary header-join" to="/register">Join Sloth <ArrowRight size={16} /></Link></>}
+    <div className="header-actions">{user ? <><Link className="header-user" to="/profile"><span className="avatar-small">{user.displayName.slice(0, 1).toUpperCase()}</span><span>{user.displayName}</span></Link><button className="icon-button" title="Log out" aria-label="Log out" onClick={logout}><LogOut size={18} /></button></> : <><Link className="text-link header-login" to="/login">Login</Link><Link className="button primary header-join" to="/register">Join Sloth <ArrowRight size={16} /></Link></>}
       <button className="icon-button menu-toggle" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen((value) => !value)}>{open ? <X size={22} /> : <Menu size={22} />}</button>
     </div>
   </div></header>;
