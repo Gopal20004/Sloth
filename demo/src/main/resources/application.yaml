@@ -1,3 +1,11 @@
 spring:
   application:
     name: demo
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 105MB
+
+sloth:
+  videos:
+    path: ${SLOTH_VIDEO_PATH:./data/videos}

@@ -11,9 +11,9 @@ Think of it as a place where every game has a home, and every player has a voice
 - **Game communities** — discussion posts and replies for every game (backend API available)
 - **Real-time chat** — talk with other players inside a community (backend API available)
 - **Servers** — user-created groups with invites and members (backend API available)
-- **Videos** — upload gameplay clips to a game's section or your profile
+- **Videos** — upload gameplay clips to a game's section or your profile (backend API available)
 
-Account, game catalog, community discussion, chat, and server backend APIs are available. Videos and the frontend remain planned.
+The backend APIs cover the roadmap features. The frontend remains planned.
 
 ## Tech stack
 
@@ -76,6 +76,10 @@ Server endpoints require a bearer token. `POST /api/servers` (`name`, optional `
 ## Chat API
 
 `GET /api/games/{slug}/chat/messages` returns recent messages, newest first, with `page` and `size` parameters. `GET /api/games/{slug}/chat/stream` is a public Server-Sent Events stream; the `message` event contains each new message. Authenticated players send a message with `POST /api/games/{slug}/chat/messages` (`body`). Clients should load recent messages when connecting or reconnecting to catch anything missed. Live delivery currently works within one backend process; persisted history is available after a reconnect.
+
+## Video API
+
+Authenticated players upload a clip with `POST /api/videos` as multipart form data: `title`, optional `gameSlug`, and `file`. MP4 and WebM files are accepted up to 100 MB. A clip always appears on its owner's profile and appears in a game's section when `gameSlug` is supplied. Anyone can browse `GET /api/users/{userId}/videos` or `GET /api/games/{slug}/videos`, fetch metadata at `GET /api/videos/{id}`, and play the clip from `GET /api/videos/{id}/file`. Owners remove a clip with `DELETE /api/videos/{id}`. Video files are stored under `SLOTH_VIDEO_PATH` (default `demo/data/videos` when run from `demo/`); keep that directory on persistent storage.
 
 ## Project structure
 
