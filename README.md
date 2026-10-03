@@ -9,11 +9,11 @@ Think of it as a place where every game has a home, and every player has a voice
 - **Accounts** — register, log in, manage a profile (backend API available)
 - **Game catalog** — curated popular games and search (backend API available)
 - **Game communities** — discussion posts and replies for every game (backend API available)
-- **Real-time chat** — talk with other players inside a community
+- **Real-time chat** — talk with other players inside a community (backend API available)
 - **Servers** — user-created groups with invites and members (backend API available)
 - **Videos** — upload gameplay clips to a game's section or your profile
 
-Account, game catalog, community discussion, and server backend APIs are available. The other features remain planned.
+Account, game catalog, community discussion, chat, and server backend APIs are available. Videos and the frontend remain planned.
 
 ## Tech stack
 
@@ -72,6 +72,10 @@ Anyone can read `GET /api/games/{slug}/posts`, `GET /api/posts/{id}`, and `GET /
 ## Server API
 
 Server endpoints require a bearer token. `POST /api/servers` (`name`, optional `description`) creates a private group. `GET /api/servers/mine` lists your groups, and members can view `GET /api/servers/{id}` and `GET /api/servers/{id}/members`. Owners generate seven-day invite codes with `POST /api/servers/{id}/invites` and revoke them with `DELETE /api/servers/{id}/invites/{inviteId}`. Share the returned code with a player, who joins with `POST /api/servers/join` (`code`). A member leaves with `DELETE /api/servers/{id}/members/me`; owners remove members with `DELETE /api/servers/{id}/members/{userId}` or delete the group with `DELETE /api/servers/{id}`. Invite codes are stored only as hashes and shown once when created.
+
+## Chat API
+
+`GET /api/games/{slug}/chat/messages` returns recent messages, newest first, with `page` and `size` parameters. `GET /api/games/{slug}/chat/stream` is a public Server-Sent Events stream; the `message` event contains each new message. Authenticated players send a message with `POST /api/games/{slug}/chat/messages` (`body`). Clients should load recent messages when connecting or reconnecting to catch anything missed. Live delivery currently works within one backend process; persisted history is available after a reconnect.
 
 ## Project structure
 
