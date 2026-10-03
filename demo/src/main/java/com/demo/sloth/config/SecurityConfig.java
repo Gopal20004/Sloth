@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/games/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/videos/**", "/api/users/*/videos").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new SessionAuthenticationFilter(authService), UsernamePasswordAuthenticationFilter.class);

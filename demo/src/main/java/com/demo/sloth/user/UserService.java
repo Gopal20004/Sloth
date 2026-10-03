@@ -1,8 +1,10 @@
 package com.demo.sloth.user;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Locale;
 
@@ -45,6 +47,13 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponse getProfile(Long userId) {
         return toResponse(userRepository.findById(userId).orElseThrow());
+    }
+
+    @Transactional(readOnly = true)
+    public PublicUserResponse getPublicProfile(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return new PublicUserResponse(user.getId(), user.getDisplayName(), user.getCreatedAt());
     }
 
     @Transactional
