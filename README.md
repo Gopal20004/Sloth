@@ -10,10 +10,10 @@ Think of it as a place where every game has a home, and every player has a voice
 - **Game catalog** — curated popular games and search (backend API available)
 - **Game communities** — discussion posts and replies for every game (backend API available)
 - **Real-time chat** — talk with other players inside a community
-- **Servers** — user-created groups with invites and members
+- **Servers** — user-created groups with invites and members (backend API available)
 - **Videos** — upload gameplay clips to a game's section or your profile
 
-Account, game catalog, and community discussion backend APIs are available. The other features remain planned.
+Account, game catalog, community discussion, and server backend APIs are available. The other features remain planned.
 
 ## Tech stack
 
@@ -68,6 +68,10 @@ The game catalog is public. `GET /api/games/popular` returns the manually curate
 ## Community API
 
 Anyone can read `GET /api/games/{slug}/posts`, `GET /api/posts/{id}`, and `GET /api/posts/{id}/replies`. A bearer token is required to create a post with `POST /api/games/{slug}/posts` (`title`, `body`) or a reply with `POST /api/posts/{id}/replies` (`body`). Authors can remove their own content with `DELETE /api/posts/{id}` and `DELETE /api/replies/{id}`. List endpoints use the same `page` and `size` parameters as the catalog.
+
+## Server API
+
+Server endpoints require a bearer token. `POST /api/servers` (`name`, optional `description`) creates a private group. `GET /api/servers/mine` lists your groups, and members can view `GET /api/servers/{id}` and `GET /api/servers/{id}/members`. Owners generate seven-day invite codes with `POST /api/servers/{id}/invites` and revoke them with `DELETE /api/servers/{id}/invites/{inviteId}`. Share the returned code with a player, who joins with `POST /api/servers/join` (`code`). A member leaves with `DELETE /api/servers/{id}/members/me`; owners remove members with `DELETE /api/servers/{id}/members/{userId}` or delete the group with `DELETE /api/servers/{id}`. Invite codes are stored only as hashes and shown once when created.
 
 ## Project structure
 
