@@ -39,4 +39,8 @@ public class User {
         this.email = email;
         this.passwordHash = passwordHash;
     }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 }

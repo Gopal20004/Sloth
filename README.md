@@ -4,16 +4,16 @@ Sloth is a community platform for gamers. Users sign in, browse popular games or
 
 Think of it as a place where every game has a home, and every player has a voice.
 
-## Features (planned)
+## Feature roadmap
 
-- **Accounts** — register, log in, manage a profile
+- **Accounts** — register, log in, manage a profile (backend API available)
 - **Game catalog** — popular games on the home page, plus search
 - **Game communities** — a discussion space for every game
 - **Real-time chat** — talk with other players inside a community
 - **Servers** — user-created groups with invites and members
 - **Videos** — upload gameplay clips to a game's section or your profile
 
-Nothing is built yet — this list is the roadmap.
+The account backend API is available. The other features remain planned.
 
 ## Tech stack
 
@@ -46,6 +46,20 @@ Nothing is built yet — this list is the roadmap.
 The first run pulls container images (~1 GB) and takes a minute or two; later runs take about 15 seconds.
 
 > `DemoApplication` (in `src/main`) is the real entry point but has no database configured yet, so it will fail to start until a proper `application.yaml` for a real environment is added.
+
+## Account API
+
+All request and response bodies use JSON. Start the backend as described above.
+
+| Action | Method and path | Body or header |
+|---|---|---|
+| Register | `POST /api/users/register` | `displayName`, `email`, `password` |
+| Log in | `POST /api/auth/login` | `email`, `password` |
+| View profile | `GET /api/users/me` | `Authorization: Bearer <token>` |
+| Update display name | `PATCH /api/users/me` | Bearer token and `displayName` |
+| Log out | `DELETE /api/auth/logout` | Bearer token |
+
+Login returns an opaque token and its expiration time. Store the token securely; it expires after 30 days, and logout revokes it. Password hashes and token hashes are stored in MySQL. Registration accepts an email address only once, regardless of letter case.
 
 ## Project structure
 
