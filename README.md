@@ -8,12 +8,12 @@ Think of it as a place where every game has a home, and every player has a voice
 
 - **Accounts** — register, log in, manage a profile (backend API available)
 - **Game catalog** — curated popular games and search (backend API available)
-- **Game communities** — a discussion space for every game
+- **Game communities** — discussion posts and replies for every game (backend API available)
 - **Real-time chat** — talk with other players inside a community
 - **Servers** — user-created groups with invites and members
 - **Videos** — upload gameplay clips to a game's section or your profile
 
-Account and game catalog backend APIs are available. The other features remain planned.
+Account, game catalog, and community discussion backend APIs are available. The other features remain planned.
 
 ## Tech stack
 
@@ -64,6 +64,10 @@ Login returns an opaque token and its expiration time. Store the token securely;
 ## Game catalog API
 
 The game catalog is public. `GET /api/games/popular` returns the manually curated order, `GET /api/games/search?q=minecraft` searches names without regard to letter case, and `GET /api/games/{slug}` returns one game. List endpoints accept `page` (starting at 0) and `size` (1–50), and return `content`, `page`, `size`, `totalElements`, and `totalPages`. The initial catalog is seeded by Flyway; popularity order is not a live ranking.
+
+## Community API
+
+Anyone can read `GET /api/games/{slug}/posts`, `GET /api/posts/{id}`, and `GET /api/posts/{id}/replies`. A bearer token is required to create a post with `POST /api/games/{slug}/posts` (`title`, `body`) or a reply with `POST /api/posts/{id}/replies` (`body`). Authors can remove their own content with `DELETE /api/posts/{id}` and `DELETE /api/replies/{id}`. List endpoints use the same `page` and `size` parameters as the catalog.
 
 ## Project structure
 
