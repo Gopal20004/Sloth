@@ -1,0 +1,154 @@
+/* Shared polish, with decorative motion disabled for reduced-motion users. */
+:root { --accent: #caff8b; --lavender: #c2a0fa; }
+body { background: radial-gradient(ellipse at 85% 12%, #30234370, transparent 36rem), #111116; }
+.container { width: min(1240px, calc(100% - 64px)); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.site-header { background: #111116df; border-bottom-color: #ffffff0e; }
+.header-inner { height: 84px; }
+.brand { font-size: 1.8rem; }
+.brand-mark { box-shadow: inset 0 1px 1px #fff7, 0 5px 18px #8b63be30; }
+.header-login { color: #ddd9e6; padding: 10px 7px; }
+.header-join { min-height: 39px; border-radius: 9px; }
+.button.primary { background: var(--accent); color: #192211; box-shadow: 0 4px 18px #baff6017; }
+.button.primary:hover { background: #ddffb6; color: #192211; box-shadow: 0 6px 26px #baff6028; }
+.button.ghost { background: #ffffff04; border-color: #ffffff24; color: #dad5e5; }
+.button.ghost:hover { background: #ffffff0c; }
+.hero { min-height: 580px; grid-template-columns: 1.12fr 1fr; gap: 0; }
+.hero-copy { padding: 70px 0 76px; }
+.eyebrow { color: #c6c0d0; font-size: .64rem; letter-spacing: .16em; gap: 10px; }
+.eyebrow-dot { height: 7px; width: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 13px #caff8b65; }
+.hero h1 { font-size: clamp(3rem, 5.3vw, 5.05rem); line-height: 1.04; letter-spacing: -.065em; }
+.hero h1 em { color: var(--lavender); }
+.hero-copy > p { max-width: 390px; color: #b0aab9; font-size: 1.02rem; line-height: 1.8; }
+.hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.hero-cta .button { min-height: 47px; font-size: .8rem; }
+.hero-footnote { display: flex; align-items: center; gap: 7px; font-size: .7rem; color: #8c8699; margin-top: 22px; }
+.hero-footnote svg { color: #b2a2cc; flex-shrink: 0; }
+
+/* An original controller illustration, shaded in SVG and floated in perspective. */
+.controller-scene { position: relative; width: 100%; height: 450px; isolation: isolate; perspective: 900px; overflow: clip; }
+.scene-grid { position: absolute; inset: 22% -2% 3%; background-image: linear-gradient(#c6b5ff09 1px, transparent 1px), linear-gradient(90deg, #c6b5ff09 1px, transparent 1px); background-size: 32px 32px; transform: rotateX(62deg) rotateZ(-22deg); mask-image: radial-gradient(ellipse, #000, transparent 70%); }
+.scene-glow { position: absolute; inset: 8% 4%; background: radial-gradient(ellipse, #9e65df3b, transparent 68%); filter: blur(12px); }
+.scene-orbit { position: absolute; inset: 18% 8% 15%; border: 1px solid #b293db30; border-radius: 50%; transform: rotate(-27deg); }
+.scene-orbit.second { inset: 8% 14%; border-color: #caff8b14; transform: rotate(36deg); }
+.controller-float { position: absolute; inset: 0 -2%; display: grid; align-items: center; animation: controller-float 7s ease-in-out infinite; }
+.controller-object { width: 100%; filter: drop-shadow(14px 28px 20px #09070ba0); transform: rotate(-14deg) rotateY(-13deg) rotateX(15deg); }
+.scene-note { position: absolute; display: flex; align-items: center; gap: 11px; background: linear-gradient(140deg, #34313fed, #202029f2); border: 1px solid #ffffff20; box-shadow: 0 15px 35px #0005; backdrop-filter: blur(12px); border-radius: 14px; z-index: 2; }
+.note-party { top: 10%; right: 1%; padding: 13px 17px; transform: rotate(6deg); }
+.scene-note-icon { display: grid; place-items: center; width: 37px; height: 37px; background: #caff8b15; border: 1px solid #caff8b25; color: var(--accent); border-radius: 11px; }
+.scene-note strong { display: block; font-size: .74rem; letter-spacing: -.01em; }
+.scene-note small { display: block; margin-top: 4px; color: #b3a9c3; font-size: .64rem; }
+.note-dot { width: 6px; height: 6px; border-radius: 50%; margin-left: 5px; background: var(--accent); }
+.note-chat { bottom: 16%; left: 0; padding: 13px 17px; transform: rotate(-7deg); font-size: .72rem; }
+.note-chat svg { color: var(--lavender); }
+.scene-spark { position: absolute; left: 13%; top: 13%; color: #c9acfa; transform: rotate(-18deg); }
+.scene-caption { position: absolute; bottom: 1%; left: 0; right: 0; text-align: center; color: #716b7d; font-size: .51rem; letter-spacing: .22em; }
+@keyframes controller-float { 0%, 100% { transform: translateY(-6px) rotate(-1deg); } 50% { transform: translateY(9px) rotate(1deg); } }
+
+.explore-section { padding-top: 35px; padding-bottom: 50px; border-top: 1px solid #ffffff0e; scroll-margin-top: 105px; }
+.section-kicker { font-size: .62rem; letter-spacing: .17em; color: #ae8edf; }
+.section-heading h2 { font-size: 2rem; letter-spacing: -.04em; }
+.section-heading p { font-size: .87rem; color: #97909f; }
+.section-count { color: #837b90; font-size: .68rem; }
+.search-box { border-radius: 11px; background: #1b1a22; border-color: #ffffff13; margin-bottom: 27px; }
+.search-box:focus-within { border-color: #bc9ae480; box-shadow: 0 0 0 3px #bc9ae410; }
+.game-grid { gap: 18px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.game-tile { border-radius: 15px; border: 1px solid #ffffff13; background: #1d1b25; box-shadow: 0 6px 20px #0001; transition: transform .22s, box-shadow .22s, border-color .22s; overflow: hidden; }
+.game-tile:hover { transform: translateY(-7px); border-color: hsl(var(--game-hue) 60% 65% / .5); box-shadow: 0 16px 32px #0005; color: #fff; }
+.game-art { height: 184px; position: relative; display: flex; align-items: center; justify-content: center; padding: 27px; isolation: isolate; background: radial-gradient(ellipse at 50% 25%, hsl(var(--game-hue) 42% 35% / .7), transparent 80%), linear-gradient(140deg, hsl(var(--game-hue) 20% 15%), #13131c); }
+.game-art::after { content: ""; position: absolute; inset: 0; z-index: -1; background: repeating-linear-gradient(135deg, transparent, transparent 22px, #ffffff04 23px, transparent 24px); }
+.game-art > .game-number { position: absolute; left: 16px; top: 14px; font-size: .57rem; letter-spacing: .12em; font-weight: 600; color: #ffffff50; }
+.game-art > .game-genre { position: absolute; bottom: 13px; left: 0; right: 0; font-size: .49rem; text-align: center; font-weight: 700; letter-spacing: .2em; color: #ffffff8c; }
+.game-art .game-logo { height: 75px; width: 124px; object-fit: contain; filter: invert(1) drop-shadow(0 9px 8px #0005); transition: transform .3s; position: relative; z-index: 1; }
+.game-tile:hover .game-logo, .game-tile:hover .game-wordmark { transform: scale(1.08); }
+.game-art .game-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+.game-art-orbit { border-color: #ffffff0a; width: 180px; height: 180px; top: -45%; right: -20%; }
+.game-wordmark { color: #f7f6fb; text-align: center; position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 1.32rem; font-weight: 900; text-transform: uppercase; line-height: 1.05; letter-spacing: -.04em; text-shadow: 0 4px 0 #0003, 0 8px 14px #0005; transition: transform .3s; }
+.wordmark-minecraft { font-family: "Arial Black", Impact, sans-serif; letter-spacing: -.07em; }
+.wordmark-minecraft svg { color: #bcd5a9; }
+.wordmark-elden-ring { color: #e8d7a0; font-family: Georgia, serif; letter-spacing: .1em; font-weight: 500; }
+.ring-sigil { display: block; width: 43px; height: 43px; border-radius: 50%; border: 2px solid #d8bb7560; box-shadow: 0 0 15px #d8bb7520, inset 0 0 10px #d8bb7520; margin-bottom: 2px; }
+.wordmark-grand-theft-auto-v { max-width: 145px; font-family: "Arial Black", Impact, sans-serif; font-size: 1.55rem; line-height: .96; }
+.game-tile-info { min-height: 104px; padding: 18px; align-items: center; }
+.game-tile-info h3 { font-size: .91rem; margin-bottom: 5px; color: #f4eefb; }
+.game-tile-info p { font-size: .7rem; color: #968caa; line-height: 1.6; }
+.game-tile-info > svg { color: #9e83c2; width: 15px; flex-shrink: 0; }
+.feature-strip { margin-top: 0; padding-top: 25px; border-top-color: #ffffff0c; }
+.feature-strip h3 { font-size: .9rem; }
+.feature-strip p { font-size: .8rem; }
+.feature-strip > div > svg { color: var(--lavender); }
+.panel { background: linear-gradient(145deg, #24202c, #1b1922); border-color: #ffffff13; }
+.auth-panel { padding: 40px; border-radius: 24px; box-shadow: 0 25px 80px #0003; }
+.auth-art { background: radial-gradient(circle at 50% 35%, #9162c951, transparent 53%), linear-gradient(150deg, #272035, #15171e); box-shadow: inset 0 1px 0 #ffffff20; }
+.auth-art > svg { transform: rotate(-14deg); filter: drop-shadow(6px 12px 0 #241b34) drop-shadow(0 15px 18px #0008); }
+.auth-art h2 { font-size: 2.6rem; }
+.field input, .field textarea { min-height: 46px; background: #111016; }
+.game-hero-mark { background: #16121c65; box-shadow: inset 0 1px 0 #ffffff20, 0 14px 30px #0003; padding: 20px; }
+.game-hero-mark .game-logo { width: 100%; height: 100%; object-fit: contain; filter: invert(1); }
+.game-hero-mark .game-wordmark { font-size: .85rem; letter-spacing: -.04em; }
+.game-hero-mark .ring-sigil { width: 25px; height: 25px; }
+
+@media (max-width: 1050px) {
+  .hero { min-height: 500px; }
+  .hero h1 { font-size: 3.7rem; }
+  .controller-scene { height: 370px; }
+  .game-grid { gap: 14px; }
+  .game-art { height: 155px; padding: 20px; }
+  .game-wordmark { font-size: 1.06rem; }
+  .wordmark-grand-theft-auto-v { font-size: 1.25rem; }
+  .game-tile-info { padding: 14px; }
+}
+@media (max-width: 760px) {
+  .container { width: calc(100% - 32px); }
+  .header-inner { height: 70px; gap: 12px; }
+  .main-nav { top: 70px; }
+  .brand { font-size: 1.5rem; gap: 7px; }
+  .brand-mark { width: 31px; height: 31px; border-radius: 10px; }
+  .header-login, .header-join { display: inline-flex; font-size: .72rem; }
+  .header-actions { gap: 7px; }
+  .header-join { padding: 8px 11px; min-height: 35px; }
+  .header-join svg { display: none; }
+  .hero { display: grid; grid-template-columns: 1fr; }
+  .hero-copy { padding: 55px 0 0; max-width: 560px; }
+  .hero h1 { font-size: clamp(2.7rem, 8.4vw, 4.5rem); }
+  .hero-copy > p { font-size: .94rem; max-width: 360px; margin-bottom: 23px; }
+  .hero-footnote { font-size: .64rem; }
+  .controller-scene { width: min(100%, 470px); height: 345px; margin: 10px auto 30px; }
+  .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .game-art { height: 170px; }
+  .explore-section { padding-top: 30px; }
+  .section-heading h2 { font-size: 1.75rem; }
+  .section-count { display: none; }
+  .game-hero-mark { padding: 12px; }
+  .game-hero-mark .game-wordmark { font-size: .62rem; }
+  .game-hero-mark .game-wordmark svg { width: 24px; height: 24px; }
+}
+@media (max-width: 420px) {
+  .header-inner { gap: 5px; }
+  .header-actions { gap: 3px; }
+  .header-login { padding: 8px 5px; }
+  .hero-cta { gap: 8px; }
+  .hero-cta .button { font-size: .7rem; padding: 10px 12px; }
+  .controller-scene { height: 280px; }
+  .note-party { right: 0; top: 5%; padding: 9px 12px; }
+  .scene-note strong { font-size: .63rem; }
+  .scene-note small { font-size: .58rem; }
+  .scene-note-icon { width: 30px; height: 30px; }
+  .note-chat { padding: 10px 12px; font-size: .62rem; }
+  .scene-spark { left: 8%; }
+  .game-art { height: 148px; padding: 20px 12px; }
+  .game-art .game-logo { width: 100px; height: 65px; }
+  .game-wordmark { font-size: .95rem; }
+  .game-tile-info { min-height: 105px; padding: 13px; }
+  .game-tile-info h3 { font-size: .8rem; }
+  .game-tile-info p { font-size: .67rem; }
+  .auth-panel { padding: 25px; }
+}
+@media (max-width: 350px) {
+  .brand > span:last-child { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .controller-float { animation: none; }
+  .game-tile, .game-logo, .game-wordmark, .button { transition: none; }
+}

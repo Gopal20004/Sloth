@@ -5,6 +5,7 @@ import { api, apiUrl, errorText, formatDate } from "../api";
 import { useAuth } from "../auth";
 import { EmptyState, ErrorNotice, Loading, VideoCard, VideoUpload } from "../components";
 import type { ChatMessage, Game, Page, Post, Reply, Video } from "../types";
+import { GameIdentity } from "../GameIdentity";
 
 type Tab = "discussions" | "chat" | "videos";
 
@@ -30,7 +31,7 @@ export default function GamePage() {
 
   return <div className="container page game-page">
     <Link to="/" className="back-link"><ArrowLeft size={16} /> All games</Link>
-    <div className="game-hero"><div className="game-hero-mark">{game.name.slice(0, 2).toUpperCase()}</div><div className="game-hero-content">
+    <div className="game-hero"><div className="game-hero-mark"><GameIdentity slug={game.slug} name={game.name} /></div><div className="game-hero-content">
       <span className="section-kicker">GAME COMMUNITY</span><h1>{game.name}</h1><p>{game.description}</p>
       <div className="game-hero-tags"><span><MessagesSquare size={15} /> Discussions</span><span><MessageCircle size={15} /> Live chat</span><span><VideoIcon size={15} /> Clips</span></div>
     </div></div>
@@ -119,7 +120,7 @@ function DiscussionTab({ slug }: { slug: string }) {
       <label className="field"><span>Title</span><input value={title} onChange={(event) => setTitle(event.target.value)} required maxLength={160} placeholder="What's on your mind?" /></label>
       <label className="field"><span>Your post</span><textarea value={body} onChange={(event) => setBody(event.target.value)} required maxLength={5000} rows={3} placeholder="Tell the community more..." /></label>
       <button className="button primary" disabled={busy}>{busy ? "Posting..." : "Post discussion"} <ArrowRight size={17} /></button></form> :
-      <div className="callout"><MessagesSquare size={20} /><span><Link to="/login">Sign in</Link> to start a discussion.</span></div>}
+      <div className="callout"><MessagesSquare size={20} /><span><Link to="/login">Log in</Link> to start a discussion.</span></div>}
     {error && <ErrorNotice message={error} />}
     {loading ? <Loading label="Loading discussions..." /> : posts.length ? <div className="post-list">{posts.map((post) => <article className="post-card panel" key={post.id}>
       <div className="post-meta"><span className="avatar-small">{post.authorName.slice(0, 1).toUpperCase()}</span><Link to={`/users/${post.authorId}`}>{post.authorName}</Link><span>·</span><time>{formatDate(post.createdAt)}</time>
@@ -127,7 +128,7 @@ function DiscussionTab({ slug }: { slug: string }) {
       <button className="post-open" onClick={() => openPost(post.id)} aria-expanded={selected === post.id}><h3>{post.title}</h3><p>{post.body}</p><span>{selected === post.id ? "Hide replies" : "View replies"} <ArrowRight size={15} /></span></button>
       {selected === post.id && <div className="reply-section"><h4>Replies</h4>{replies.length ? replies.map((reply) => <div className="reply" key={reply.id}><span className="avatar-small">{reply.authorName.slice(0, 1).toUpperCase()}</span><div><div className="post-meta"><Link to={`/users/${reply.authorId}`}>{reply.authorName}</Link><time>{formatDate(reply.createdAt)}</time></div><p>{reply.body}</p></div>
         {user?.id === reply.authorId && <button className="icon-button danger push-right" title="Delete reply" onClick={() => deleteReply(reply.id)}><Trash2 size={15} /></button>}</div>) : <p className="muted">No replies yet. Be the first.</p>}
-        {token ? <form className="reply-form" onSubmit={createReply}><input value={replyBody} onChange={(event) => setReplyBody(event.target.value)} maxLength={2000} required placeholder="Write a reply..." /><button className="button secondary" disabled={busy}><Send size={16} /> Reply</button></form> : <p className="muted"><Link to="/login">Sign in</Link> to reply.</p>}
+        {token ? <form className="reply-form" onSubmit={createReply}><input value={replyBody} onChange={(event) => setReplyBody(event.target.value)} maxLength={2000} required placeholder="Write a reply..." /><button className="button secondary" disabled={busy}><Send size={16} /> Reply</button></form> : <p className="muted"><Link to="/login">Log in</Link> to reply.</p>}
       </div>}
     </article>)}</div> : <EmptyState icon={<MessagesSquare size={28} />} title="Start the conversation" text="No discussions yet. Your post could be the first." />}
     {hasMore && <button className="button ghost centered" onClick={() => loadPosts(page + 1)}>Load more discussions</button>}
@@ -177,7 +178,7 @@ function ChatTab({ slug }: { slug: string }) {
   return <section className="tab-content"><div className="section-heading"><div><span className="section-kicker">RIGHT NOW</span><h2>Live chat</h2><p>Jump into the conversation with other players.</p></div><span className={`live-indicator ${connected ? "online" : ""}`}><span />{connected ? "Live" : "Connecting"}</span></div>
     <div className="chat-panel panel"><div className="chat-messages">{messages.length ? messages.map((message) => <div className="chat-message" key={message.id}><span className="avatar-small">{message.senderName.slice(0, 1).toUpperCase()}</span><div><div className="post-meta"><Link to={`/users/${message.senderId}`}>{message.senderName}</Link><time>{formatDate(message.sentAt)}</time></div><p>{message.body}</p></div></div>) : <EmptyState icon={<MessageCircle size={28} />} title="It's quiet in here" text="Say hello and get the chat going." />}<div ref={bottom} /></div>
       {error && <ErrorNotice message={error} />}
-      {token ? <form className="chat-compose" onSubmit={send}><input value={body} onChange={(event) => setBody(event.target.value)} maxLength={1000} required placeholder="Message the community..." aria-label="Chat message" /><button className="button primary" disabled={busy}><Send size={17} /><span>Send</span></button></form> : <div className="chat-signin"><Link to="/login">Sign in</Link> to join the conversation.</div>}
+      {token ? <form className="chat-compose" onSubmit={send}><input value={body} onChange={(event) => setBody(event.target.value)} maxLength={1000} required placeholder="Message the community..." aria-label="Chat message" /><button className="button primary" disabled={busy}><Send size={17} /><span>Send</span></button></form> : <div className="chat-signin"><Link to="/login">Log in</Link> to join the conversation.</div>}
     </div>
   </section>;
 }

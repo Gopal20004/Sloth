@@ -99,7 +99,7 @@ export default function ServersPage() {
     catch { setError("Couldn't copy the code. Select it and copy it manually."); }
   }
 
-  if (!token || !user) return <div className="container page"><EmptyState icon={<Users size={28} />} title="Find your crew" text="Sign in to create or join a server." action={<Link to="/login" className="button primary">Sign in <ArrowRight size={17} /></Link>} /></div>;
+  if (!token || !user) return <div className="container page"><EmptyState icon={<Users size={28} />} title="Find your crew" text="Log in to create or join a server." action={<Link to="/login" className="button primary">Log in <ArrowRight size={17} /></Link>} /></div>;
 
   return <div className="container page servers-page">
     <div className="page-intro"><span className="section-kicker">YOUR CREW</span><h1>Servers</h1><p>Create a space for your people, or join one with an invite.</p></div>

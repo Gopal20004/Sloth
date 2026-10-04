@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Gamepad2, MessageCircle, Search, Sparkles, Users, Video } from "lucide-react";
+import { ArrowRight, MessageCircle, Search, Sparkles, Users, Video } from "lucide-react";
 import { Link } from "react-router-dom";
 import { api, errorText } from "../api";
 import { EmptyState, ErrorNotice, GameTile, Loading } from "../components";
 import type { Game, Page } from "../types";
+import ControllerScene from "../ControllerScene";
 
 export default function HomePage() {
   const [games, setGames] = useState<Game[]>([]);
@@ -37,22 +38,18 @@ export default function HomePage() {
   return <>
     <section className="hero container">
       <div className="hero-copy">
-        <div className="eyebrow"><Sparkles size={15} /> YOUR NEXT COMMUNITY STARTS HERE</div>
-        <h1>Every game<br />has a <em>home.</em></h1>
-        <p>Find your people. Swap stories, catch the conversation, and share the moments worth replaying.</p>
-        <a className="button primary hero-button" href="#explore">Explore games <ArrowRight size={18} /></a>
+        <div className="eyebrow"><span className="eyebrow-dot" /> YOUR PLAYER TWO IS OUT THERE</div>
+        <h1>Good games.<br /><em>Great company.</em></h1>
+        <p>Find your game. Meet your crew. Share the moments that make you say, “one more round.”</p>
+        <div className="hero-cta"><a className="button primary hero-button" href="#explore">Find your community <ArrowRight size={18} /></a><Link className="button ghost" to="/servers"><Users size={17} /> Find your crew</Link></div>
+        <div className="hero-footnote"><Sparkles size={14} /> Discussions, live chat & your best plays. All in one place.</div>
       </div>
-      <div className="hero-visual" aria-hidden="true">
-        <div className="hero-halo" /><div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" />
-        <div className="hero-center"><Gamepad2 size={76} strokeWidth={1.5} /></div>
-        <div className="floating-pill pill-top"><MessageCircle size={17} /> Live conversations</div>
-        <div className="floating-pill pill-bottom"><Video size={17} /> Moments that matter</div>
-      </div>
+      <ControllerScene />
     </section>
 
     <section className="explore-section container" id="explore">
-      <div className="section-heading"><div><span className="section-kicker">DISCOVER</span><h2>Find your game</h2><p>Step into a community that already speaks your language.</p></div>
-        <span className="section-count">{games.length} games to explore</span></div>
+      <div className="section-heading"><div><span className="section-kicker">PICK YOUR WORLD</span><h2>Where do you play?</h2><p>Every game has a community. Find yours.</p></div>
+        <span className="section-count">{games.length} communities · endless conversations</span></div>
       <label className="search-box"><Search size={21} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search games..." aria-label="Search games" />
         {searching && <span className="searching-label">Searching</span>}</label>
       {error && <ErrorNotice message={error} onRetry={() => window.location.reload()} />}

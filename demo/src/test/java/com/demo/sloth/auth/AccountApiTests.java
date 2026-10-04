@@ -2,6 +2,8 @@ package com.demo.sloth;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -20,6 +22,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AccountApiTests {
 
     @Autowired MockMvc mvc;
+
+    @ParameterizedTest
+    @ValueSource(strings = {"http://localhost:5173", "http://127.0.0.1:5173"})
+    void localBrowserOriginsCanPreflightAndReachLogin(String origin) throws Exception {
+        mvc.perform(options("/api/auth/login")
+                        .header("Origin", origin)
+                        .header("Access-Control-Request-Method", "POST")
+                        .header("Access-Control-Request-Headers", "Content-Type, Authorization"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Access-Control-Allow-Origin", origin));
+
+        mvc.perform(post("/api/auth/login")
+                        .header("Origin", origin)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"missing-cors-user@example.com\",\"password\":\"invalid-password\"}"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(header().string("Access-Control-Allow-Origin", origin));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"https://untrusted.example", "http://localhost:5174"})
+    void otherOriginsCannotPreflightOrLogin(String origin) throws Exception {
+        mvc.perform(options("/api/auth/login")
+                        .header("Origin", origin)
+                        .header("Access-Control-Request-Method", "POST"))
+                .andExpect(status().isForbidden())
+                .andExpect(header().doesNotExist("Access-Control-Allow-Origin"));
+
+        mvc.perform(post("/api/auth/login")
+                        .header("Origin", origin)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"missing-cors-user@example.com\",\"password\":\"invalid-password\"}"))
+                .andExpect(status().isForbidden())
+                .andExpect(header().doesNotExist("Access-Control-Allow-Origin"));
+    }
 
     @Test
     void registrationLoginProfileAndLogout() throws Exception {

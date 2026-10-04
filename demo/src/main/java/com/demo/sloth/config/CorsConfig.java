@@ -13,10 +13,10 @@ public class CorsConfig {
 
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource(
-            @Value("${sloth.allowed-origin}") String allowedOrigin
+            @Value("${sloth.allowed-origin}") List<String> allowedOrigins
     ) {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(allowedOrigin));
+        configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

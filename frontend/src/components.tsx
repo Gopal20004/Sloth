@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { api, apiUrl, errorText, formatDate } from "./api";
 import { useAuth } from "./auth";
 import type { Game, Video } from "./types";
+import { GameIdentity, gameIdentity } from "./GameIdentity";
 
 export function Loading({ label = "Loading..." }: { label?: string }) {
   return <div className="state-box"><LoaderCircle className="spin" size={24} /><span>{label}</span></div>;
@@ -25,13 +26,14 @@ export function EmptyState({ icon, title, text, action }: {
   </div>;
 }
 
-const palette = [268, 207, 348, 28, 153, 234, 43, 310];
 export function GameTile({ game, index = 0 }: { game: Game; index?: number }) {
-  const hue = palette[index % palette.length];
+  const { hue, genre } = gameIdentity(game.slug);
   return <Link to={`/games/${game.slug}`} className="game-tile" style={{ "--game-hue": hue } as CSSProperties}>
     <div className="game-art">
-      {game.coverUrl ? <img src={game.coverUrl} alt="" /> : <span>{game.name.slice(0, 2).toUpperCase()}</span>}
+      <span className="game-number">{String(index + 1).padStart(2, "0")}</span>
+      {game.coverUrl ? <img className="game-cover" src={game.coverUrl} alt="" /> : <GameIdentity slug={game.slug} name={game.name} />}
       <div className="game-art-orbit" />
+      <span className="game-genre">{genre}</span>
     </div>
     <div className="game-tile-info"><div><h3>{game.name}</h3><p>{game.description}</p></div><ArrowRight size={18} /></div>
   </Link>;
@@ -89,7 +91,7 @@ export function VideoUpload({ gameSlug, onUploaded }: { gameSlug?: string; onUpl
     finally { setBusy(false); }
   }
 
-  if (!token) return <div className="callout"><UploadCloud size={20} /><span><Link to="/login">Sign in</Link> to share a clip.</span></div>;
+  if (!token) return <div className="callout"><UploadCloud size={20} /><span><Link to="/login">Log in</Link> to share a clip.</span></div>;
   return <form className="upload-form panel" onSubmit={submit}>
     <div className="form-intro"><UploadCloud size={21} /><div><h3>Share a clip</h3><p>MP4 or WebM, up to 100 MB</p></div></div>
     <div className="form-row">
