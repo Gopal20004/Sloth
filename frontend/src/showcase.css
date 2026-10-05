@@ -29,9 +29,7 @@ body { background: radial-gradient(ellipse at 85% 12%, #30234370, transparent 36
 .controller-scene { position: relative; width: 100%; height: 450px; isolation: isolate; perspective: 900px; overflow: clip; }
 .scene-grid { position: absolute; inset: 22% -2% 3%; background-image: linear-gradient(#c6b5ff09 1px, transparent 1px), linear-gradient(90deg, #c6b5ff09 1px, transparent 1px); background-size: 32px 32px; transform: rotateX(62deg) rotateZ(-22deg); mask-image: radial-gradient(ellipse, #000, transparent 70%); }
 .scene-glow { position: absolute; inset: 8% 4%; background: radial-gradient(ellipse, #9e65df3b, transparent 68%); filter: blur(12px); }
-.scene-orbit { position: absolute; inset: 18% 8% 15%; border: 1px solid #b293db30; border-radius: 50%; transform: rotate(-27deg); }
-.scene-orbit.second { inset: 8% 14%; border-color: #caff8b14; transform: rotate(36deg); }
-.controller-float { position: absolute; inset: 0 -2%; display: grid; align-items: center; animation: controller-float 7s ease-in-out infinite; }
+.controller-float { position: absolute; inset: 0 -2%; display: grid; align-items: center; }
 .controller-object { width: 100%; filter: drop-shadow(14px 28px 20px #09070ba0); transform: rotate(-14deg) rotateY(-13deg) rotateX(15deg); }
 .scene-note { position: absolute; display: flex; align-items: center; gap: 11px; background: linear-gradient(140deg, #34313fed, #202029f2); border: 1px solid #ffffff20; box-shadow: 0 15px 35px #0005; backdrop-filter: blur(12px); border-radius: 14px; z-index: 2; }
 .note-party { top: 10%; right: 1%; padding: 13px 17px; transform: rotate(6deg); }
@@ -43,7 +41,6 @@ body { background: radial-gradient(ellipse at 85% 12%, #30234370, transparent 36
 .note-chat svg { color: var(--lavender); }
 .scene-spark { position: absolute; left: 13%; top: 13%; color: #c9acfa; transform: rotate(-18deg); }
 .scene-caption { position: absolute; bottom: 1%; left: 0; right: 0; text-align: center; color: #716b7d; font-size: .51rem; letter-spacing: .22em; }
-@keyframes controller-float { 0%, 100% { transform: translateY(-6px) rotate(-1deg); } 50% { transform: translateY(9px) rotate(1deg); } }
 
 .explore-section { padding-top: 35px; padding-bottom: 50px; border-top: 1px solid #ffffff0e; scroll-margin-top: 105px; }
 .section-kicker { font-size: .62rem; letter-spacing: .17em; color: #ae8edf; }
@@ -171,4 +168,60 @@ body { background: radial-gradient(ellipse at 85% 12%, #30234370, transparent 36
 @media (prefers-reduced-motion: reduce) {
   .game-tile:hover .game-logo, .game-tile:hover .game-wordmark { transform: none; }
   .hero-button::after { display: none; }
+}
+
+/* Cinematic depth is built from small static gradients and transformed SVG layers.
+   No video, canvas, WebGL textures, scroll interception, or extra rendering dependency. */
+.hero-atmosphere { position: relative; isolation: isolate; overflow: clip; background: radial-gradient(ellipse at 77% 40%, #5d377825, transparent 52%), linear-gradient(180deg, #19152080, #111116); }
+.hero-atmosphere::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(115deg, transparent 49.9%, #b99edc08 50%, transparent 50.1%); }
+.hero { min-height: 600px; }
+.hero-copy { position: relative; z-index: 1; }
+.hero-horizon { display: flex; justify-content: space-between; gap: 18px; padding: 0 0 26px; color: #aaa0b8; font-size: .55rem; letter-spacing: .19em; }
+.hero-horizon span { display: flex; align-items: center; gap: 10px; }
+.hero-horizon span::before { content: "+"; color: #caff8b; font-size: .85rem; }
+.scene-stage { position: relative; min-width: 0; }
+.controller-scene { height: 500px; }
+.scene-watermark { position: absolute; inset: 0 0 auto; text-align: center; font-size: clamp(7rem, 13vw, 12rem); line-height: 1; font-weight: 900; letter-spacing: -.07em; color: #c5a0ff06; -webkit-text-stroke: 1px #c5a0ff18; }
+.scene-depth { position: absolute; inset: 0; pointer-events: none; }
+.scene-portal { position: absolute; width: 72%; aspect-ratio: 1; left: 14%; top: 10%; border-radius: 50%; border: 1px solid #d6b0ff65; background: radial-gradient(circle at 50% 60%, #1b192600 40%, #ab73ea18 68%, #d7b4ff55 70%, #916bcb10 71%); box-shadow: inset 0 0 45px #b886ff14, 0 0 35px #a472e519; transform: rotate(-25deg) rotateY(24deg); }
+.scene-portal span { position: absolute; inset: 4%; border: 1px solid #d7b4ff25; border-radius: 50%; }
+.scene-portal span:nth-child(2) { inset: -7%; border: 1px dashed #d7b4ff21; }
+.scene-portal span:nth-child(3) { inset: 12%; border-color: #caff8b18; }
+.scene-stars { position: absolute; left: 12%; top: 23%; width: 3px; height: 3px; border-radius: 50%; background: #e5ceff; box-shadow: 80px -45px #caff8b80, 240px 25px #c8a3ff70, 320px 180px #caff8b70, 20px 250px #d5b7ff70, 160px 300px #caff8b60, 340px -25px #fff6; }
+.scene-shard { position: absolute; width: 28px; height: 28px; border: 1px solid #dcc4ff60; background: linear-gradient(135deg, #c4a1ff40, #55427310); box-shadow: inset 6px 6px 0 #d7b4ff0c; }
+.shard-one { left: 9%; top: 45%; transform: rotate(-22deg) skewY(12deg); }
+.shard-two { right: 8%; bottom: 20%; width: 18px; height: 18px; transform: rotate(28deg); border-color: #caff8b60; }
+.scene-coordinate { position: absolute; right: 7%; top: 50%; writing-mode: vertical-rl; color: #b5a2ce; font-size: .46rem; letter-spacing: .22em; }
+.scene-grid { inset: 48% -2% -15%; }
+.scene-glow { filter: none; }
+.controller-object { filter: drop-shadow(8px 16px 12px #09070b80); }
+.scene-note { backdrop-filter: none; background: linear-gradient(140deg, #34313f, #202029); }
+.note-party { top: 13%; right: 0; }
+.note-chat { bottom: 14%; }
+.scene-spark { top: 23%; left: 6%; }
+.scene-caption { bottom: 5%; color: #a297b2; }
+.scene-motion-toggle { display: flex; align-items: center; gap: 6px; margin: 0 auto 12px; padding: 6px 10px; border: 1px solid #ffffff20; border-radius: 20px; background: #1a1821; color: #bdb3cc; font: inherit; font-size: .6rem; cursor: pointer; }
+.scene-motion-toggle:hover { border-color: #c2a0fa80; color: #f2e9ff; }
+@media (max-width: 1050px) {
+  .hero { min-height: 540px; }
+  .controller-scene { height: 400px; }
+  .scene-watermark { top: 5%; }
+}
+@media (max-width: 760px) {
+  .hero { min-height: auto; }
+  .controller-scene { height: 370px; margin: 5px auto 15px; }
+  .scene-watermark { font-size: 8.5rem; top: 0; }
+  .scene-portal { width: 64%; left: 18%; }
+  .hero-horizon { justify-content: center; padding-bottom: 22px; }
+  .hero-horizon span:not(:first-child) { display: none; }
+  .scene-stars, .scene-shard { display: none; }
+  .scene-coordinate { right: 5%; }
+  .scene-caption { font-size: .45rem; }
+}
+@media (max-width: 420px) {
+  .controller-scene { height: 305px; }
+  .scene-watermark { font-size: 7.4rem; }
+  .scene-caption { bottom: 3%; }
+  .note-party { top: 10%; }
+  .scene-coordinate { right: 2%; font-size: .4rem; }
 }

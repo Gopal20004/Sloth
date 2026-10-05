@@ -37,7 +37,7 @@ export default function HomePage() {
 
   const shown = results ?? games;
   return <>
-    <section className="hero container">
+    <div className="hero-atmosphere"><section className="hero container">
       <Reveal className="hero-copy">
         <div className="eyebrow"><span className="eyebrow-dot" /> YOUR PLAYER TWO IS OUT THERE</div>
         <h1>Good games.<br /><em>Great company.</em></h1>
@@ -46,7 +46,7 @@ export default function HomePage() {
         <div className="hero-footnote"><Sparkles size={14} /> Discussions, live chat & your best plays. All in one place.</div>
       </Reveal>
       <ControllerScene />
-    </section>
+    </section><div className="hero-horizon container" aria-hidden="true"><span>PLAY YOUR WAY</span><span>FIND YOUR PEOPLE</span><span>MAKE IT A GOOD GAME</span></div></div>
 
     <section className="explore-section container" id="explore">
       <Reveal className="section-heading"><div><span className="section-kicker">PICK YOUR WORLD</span><h2>Where do you play?</h2><p>Every game has a community. Find yours.</p></div>
