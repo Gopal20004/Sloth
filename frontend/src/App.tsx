@@ -3,6 +3,7 @@ import { ArrowRight, Gamepad2, Home, LogOut, Menu, UserRound, Users, X } from "l
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 import { Loading } from "./components";
+import { PageTransition } from "./animation";
 import AuthPage from "./pages/AuthPage";
 import GamePage from "./pages/GamePage";
 import HomePage from "./pages/HomePage";
@@ -53,7 +54,8 @@ function Footer() {
 }
 
 export default function App() {
-  return <div className="app-shell"><ScrollToTop /><Header /><main className="site-main"><Routes>
+  const location = useLocation();
+  return <div className="app-shell"><ScrollToTop /><Header /><main className="site-main"><PageTransition key={location.pathname}><Routes location={location}>
     <Route path="/" element={<HomePage />} />
     <Route path="/games/:slug" element={<GamePage />} />
     <Route path="/servers" element={<RequireAuth><ServersPage /></RequireAuth>} />
@@ -62,5 +64,5 @@ export default function App() {
     <Route path="/login" element={<AuthPage mode="login" />} />
     <Route path="/register" element={<AuthPage mode="register" />} />
     <Route path="*" element={<div className="container page not-found"><h1>Lost in the lobby?</h1><p>That page doesn't exist.</p><Link className="button primary" to="/">Back to games <ArrowRight size={17} /></Link></div>} />
-  </Routes></main><Footer /></div>;
+  </Routes></PageTransition></main><Footer /></div>;
 }

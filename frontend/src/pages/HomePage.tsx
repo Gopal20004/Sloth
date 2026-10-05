@@ -5,6 +5,7 @@ import { api, errorText } from "../api";
 import { EmptyState, ErrorNotice, GameTile, Loading } from "../components";
 import type { Game, Page } from "../types";
 import ControllerScene from "../ControllerScene";
+import { Reveal } from "../animation";
 
 export default function HomePage() {
   const [games, setGames] = useState<Game[]>([]);
@@ -37,19 +38,19 @@ export default function HomePage() {
   const shown = results ?? games;
   return <>
     <section className="hero container">
-      <div className="hero-copy">
+      <Reveal className="hero-copy">
         <div className="eyebrow"><span className="eyebrow-dot" /> YOUR PLAYER TWO IS OUT THERE</div>
         <h1>Good games.<br /><em>Great company.</em></h1>
         <p>Find your game. Meet your crew. Share the moments that make you say, “one more round.”</p>
         <div className="hero-cta"><a className="button primary hero-button" href="#explore">Find your community <ArrowRight size={18} /></a><Link className="button ghost" to="/servers"><Users size={17} /> Find your crew</Link></div>
         <div className="hero-footnote"><Sparkles size={14} /> Discussions, live chat & your best plays. All in one place.</div>
-      </div>
+      </Reveal>
       <ControllerScene />
     </section>
 
     <section className="explore-section container" id="explore">
-      <div className="section-heading"><div><span className="section-kicker">PICK YOUR WORLD</span><h2>Where do you play?</h2><p>Every game has a community. Find yours.</p></div>
-        <span className="section-count">{games.length} communities · endless conversations</span></div>
+      <Reveal className="section-heading"><div><span className="section-kicker">PICK YOUR WORLD</span><h2>Where do you play?</h2><p>Every game has a community. Find yours.</p></div>
+        <span className="section-count">{games.length} communities · endless conversations</span></Reveal>
       <label className="search-box"><Search size={21} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search games..." aria-label="Search games" />
         {searching && <span className="searching-label">Searching</span>}</label>
       {error && <ErrorNotice message={error} onRetry={() => window.location.reload()} />}
@@ -59,9 +60,9 @@ export default function HomePage() {
     </section>
 
     <section className="feature-strip container">
-      <div><MessageCircle size={22} /><h3>Talk it out</h3><p>Join discussions and live chat for every game.</p></div>
-      <div><Users size={22} /><h3>Find your crew</h3><p>Make a private server and invite your people.</p></div>
-      <div><Video size={22} /><h3>Show the highlight</h3><p>Share clips with your game and your profile.</p></div>
+      <Reveal><MessageCircle size={22} /><h3>Talk it out</h3><p>Join discussions and live chat for every game.</p></Reveal>
+      <Reveal delay={0.06}><Users size={22} /><h3>Find your crew</h3><p>Make a private server and invite your people.</p></Reveal>
+      <Reveal delay={0.12}><Video size={22} /><h3>Show the highlight</h3><p>Share clips with your game and your profile.</p></Reveal>
       <Link to="/servers" className="feature-link">Explore servers <ArrowRight size={17} /></Link>
     </section>
   </>;

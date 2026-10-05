@@ -5,6 +5,8 @@ import { api, apiUrl, errorText, formatDate } from "./api";
 import { useAuth } from "./auth";
 import type { Game, Video } from "./types";
 import { GameIdentity, gameIdentity } from "./GameIdentity";
+import { useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 
 export function Loading({ label = "Loading..." }: { label?: string }) {
   return <div className="state-box"><LoaderCircle className="spin" size={24} /><span>{label}</span></div>;
@@ -28,7 +30,14 @@ export function EmptyState({ icon, title, text, action }: {
 
 export function GameTile({ game, index = 0 }: { game: Game; index?: number }) {
   const { hue, genre } = gameIdentity(game.slug);
-  return <Link to={`/games/${game.slug}`} className="game-tile" style={{ "--game-hue": hue } as CSSProperties}>
+  const reduce = useReducedMotion();
+  return <m.div className="game-tile-motion"
+    initial={reduce ? false : { opacity: 0, y: 22 }}
+    whileInView={{ opacity: 1, y: 0, transition: { duration: reduce ? 0 : 0.42, delay: reduce ? 0 : Math.min(index, 7) * 0.045 } }}
+    viewport={{ once: true, amount: 0.1 }}
+    whileHover={reduce ? undefined : { y: -7, transition: { duration: 0.2 } }}
+    whileTap={reduce ? undefined : { scale: 0.985, transition: { duration: 0.1 } }}>
+    <Link to={`/games/${game.slug}`} className="game-tile" style={{ "--game-hue": hue } as CSSProperties}>
     <div className="game-art">
       <span className="game-number">{String(index + 1).padStart(2, "0")}</span>
       {game.coverUrl ? <img className="game-cover" src={game.coverUrl} alt="" /> : <GameIdentity slug={game.slug} name={game.name} />}
@@ -36,7 +45,7 @@ export function GameTile({ game, index = 0 }: { game: Game; index?: number }) {
       <span className="game-genre">{genre}</span>
     </div>
     <div className="game-tile-info"><div><h3>{game.name}</h3><p>{game.description}</p></div><ArrowRight size={18} /></div>
-  </Link>;
+  </Link></m.div>;
 }
 
 export function VideoCard({ video, onDeleted }: { video: Video; onDeleted?: () => void }) {
