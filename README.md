@@ -44,7 +44,7 @@ The frontend calls `/api` through Vite's proxy in development. Flyway creates th
 | Messaging / events | Apache Kafka (provisioned for future use) |
 | Build | Maven (wrapper included) |
 | Local infra | Docker Compose; Testcontainers for integration tests |
-| Frontend | React, TypeScript, Vite, pnpm |
+| Frontend | React, TypeScript, Vite, pnpm, Motion for React |
 
 ## Running locally
 
@@ -97,7 +97,8 @@ This guide covers the code by component. For each part, it describes the choice,
 | `frontend/src/pages/ServersPage.tsx` | Creation, joining, invite codes, members, and owner controls use the private-server API, so players need no raw API calls. | More granular screens could be easier to extend; current lists fetch only the first 50 records. |
 | `frontend/src/pages/ProfilePage.tsx` | Public profile data and clips appear together; owners can edit their name and upload clips. This gives every clip a player home while keeping email private. | Richer social profiles require new fields, privacy settings, and UI. |
 | `frontend/src/components.tsx` and `styles.css` | Shared loading/error states, cards, upload controls, and responsive styling keep feature pages consistent on desktop and mobile. | A component library may help a larger team, but adds dependencies and design constraints. |
-| `frontend/src/ControllerScene.tsx` and `showcase.css` | An original shaded SVG controller, CSS perspective, and subtle floating motion give the homepage depth without loading a 3D engine. Reduced-motion preferences disable the animation; mobile layouts keep Login and Join Sloth visible. | WebGL could add interactive camera movement and lighting, but would increase bundle size and rendering cost. |
+| `frontend/src/animation.tsx`, `App.tsx`, and `components.tsx` | Motion for React supplies short page entrances, once-per-mount section reveals, staggered game cards, and responsive hover/tap feedback. `LazyMotion` loads the animation feature subset, while `MotionConfig` and `useReducedMotion` respect the device preference. Routes enter immediately so old forms and chat connections are not retained for exit effects. | CSS is enough for simple transitions and costs no extra library bytes. Motion adds dependency and bundle size in exchange for coordinated gestures, viewport triggers, and spring smoothing. Heavy scene transitions or large stagger delays would slow navigation. |
+| `frontend/src/ControllerScene.tsx` and `showcase.css` | An original shaded SVG controller uses spring-smoothed pointer tilt, perspective, layered lighting, and gentle floating motion to make the homepage feel dimensional. Touch input never triggers pointer tilt; reduced-motion preferences stop decorative movement; the float pauses outside the viewport. Mobile layouts keep Login and Join Sloth visible. | WebGL could add interactive camera movement and lighting, but would increase bundle size and rendering cost. |
 | `frontend/src/GameIdentity.tsx` and `frontend/public/game-logos/` | Locally bundled game marks and styled full-title fallbacks replace two-letter placeholders, making communities easier to recognize. [Asset credits](frontend/public/game-logos/README.md) record the source and license. | External image URLs would be easier to change centrally but add runtime network dependencies and potential broken images. |
 | `frontend/package.json`, `pnpm-lock.yaml`, and `vite.config.ts` | Locked dependencies and Vite provide repeatable installs, a production build, and a development API proxy. | A server-rendering framework brings more built-in deployment features but adds runtime and setup complexity. |
 

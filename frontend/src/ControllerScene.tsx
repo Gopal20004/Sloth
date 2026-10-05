@@ -1,11 +1,35 @@
 import { MessageCircle, Sparkles, Users } from "lucide-react";
+import { useEffect, useRef, type PointerEvent } from "react";
+import { useInView, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import * as m from "motion/react-m";
 
-// SVG shading and CSS perspective add depth without a WebGL runtime.
+// Spring-smoothed transforms tilt the original SVG in perspective without a WebGL renderer.
 export default function ControllerScene() {
-  return <div className="controller-scene" aria-hidden="true">
+  const scene = useRef<HTMLDivElement>(null);
+  const visible = useInView(scene, { amount: 0.15 });
+  const reduce = useReducedMotion();
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const rotateX = useSpring(pointerX, { stiffness: 100, damping: 22 });
+  const rotateY = useSpring(pointerY, { stiffness: 100, damping: 22 });
+
+  function resetTilt() { pointerX.set(0); pointerY.set(0); }
+  function tilt(event: PointerEvent<HTMLDivElement>) {
+    if (reduce || event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    pointerX.set(-((event.clientY - bounds.top) / bounds.height - 0.5) * 12);
+    pointerY.set(((event.clientX - bounds.left) / bounds.width - 0.5) * 16);
+  }
+  useEffect(() => {
+    if (reduce || !visible) { pointerX.set(0); pointerY.set(0); }
+  }, [reduce, visible, pointerX, pointerY]);
+
+  return <div ref={scene} className="controller-scene" aria-hidden="true" onPointerMove={tilt} onPointerLeave={resetTilt}>
     <div className="scene-grid" /><div className="scene-glow" />
     <div className="scene-orbit" /><div className="scene-orbit second" />
-    <div className="controller-float">
+    <m.div className="controller-float" style={{ rotateX, rotateY }}
+      animate={{ y: reduce || !visible ? 0 : [-6, 9, -6] }}
+      transition={{ y: { duration: reduce || !visible ? 0 : 7, repeat: reduce || !visible ? 0 : Infinity, ease: "easeInOut" } }}>
       <svg className="controller-object" viewBox="0 0 500 360" fill="none">
         <defs>
           <linearGradient id="shell" x1="140" y1="75" x2="360" y2="305" gradientUnits="userSpaceOnUse"><stop stopColor="#ede5ff" /><stop offset=".35" stopColor="#a89abd" /><stop offset=".7" stopColor="#6e627f" /><stop offset="1" stopColor="#322b48" /></linearGradient>
@@ -27,7 +51,7 @@ export default function ControllerScene() {
         <circle cx="250" cy="196" r="10" fill="#554b65" /><path d="M246 196H254M250 192V200" stroke="#e7daf9" strokeWidth="2" />
         <path d="M89 239L111 190M410 239L388 190" stroke="#eae1ff" strokeOpacity=".17" strokeWidth="3" strokeLinecap="round" />
       </svg>
-    </div>
+    </m.div>
     <div className="scene-note note-party"><span className="scene-note-icon"><Users size={18} /></span><div><strong>Your next party</strong><small>Starts with a hello.</small></div><span className="note-dot" /></div>
     <div className="scene-note note-chat"><MessageCircle size={17} /><span>Same game. New friends.</span></div>
     <span className="scene-spark"><Sparkles size={24} /></span>
